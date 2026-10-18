@@ -142,6 +142,21 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   .msg { text-align: left; }
 }
 @media (prefers-reduced-motion: reduce) { .zone { transition: none; } .ghost { transform: none; } }
+/* Agent card: a plain sheet below the map, same tokens as the slide */
+.agent-card { max-width: 1280px; margin: 24px auto 0; background: var(--slide); border: 1px solid var(--line); border-radius: 10px; padding: 24px 32px 28px; }
+.agent-card h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(18px, 2vw, 24px); margin: 0 0 14px; line-height: 1.2; }
+.agent-card ol { margin: 0; padding-left: 1.4em; display: grid; gap: 10px; max-width: 75ch; line-height: 1.5; }
+.agent-card b { font-weight: 600; }
+.agent-card h3 { font-family: var(--font-display); font-weight: 700; font-size: 17px; margin: 22px 0 8px; line-height: 1.25; }
+.agent-card p, .agent-card li { max-width: 75ch; line-height: 1.55; }
+.agent-card p { margin: 0 0 10px; }
+.agent-card ul { margin: 0 0 10px; padding-left: 1.3em; display: grid; gap: 6px; }
+.agent-card .todo { color: var(--accent); font-weight: 600; }
+.shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 8px; }
+.shots figure { margin: 0; display: grid; gap: 6px; align-content: start; }
+.shots img { width: 100%; max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+.shots figcaption { font-size: 14px; color: var(--muted); line-height: 1.4; }
+.shots .missing { padding: 28px 12px; border: 1.5px dashed var(--line); border-radius: 8px; color: var(--muted); font-family: var(--font-mono); font-size: 12px; text-align: center; }
 </style>
 </head>
 <body>
@@ -202,6 +217,101 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   </section>
 </main>
 
+<!-- ===== EDIT HERE: your agent card (PS5 Step 1) ===== -->
+<section class="agent-card" id="agent-card" aria-labelledby="agent-card-title">
+  <h2 id="agent-card-title">My agent card | Appointment Reply Drafter | finished 17 Oct 2026, 12:00 PM SGT</h2>
+  <ol>
+    <li><b>The job:</b> When someone emails me to ask for an appointment, it drafts a short, polite reply that greets them by first name and responds to what they asked. If they want to meet in the future, it invites them to book a time on my shared Google schedule; if the request isn&rsquo;t realistic, it replies politely. It works for me, a postgrad student who juggles postgrad timelines, personal life and project meetings, so senders can book directly and I spend less time on rescheduling.</li>
+    <li><b>The trigger:</b> A new email in my Gmail Inbox with &ldquo;appointment&rdquo; in the subject (Gmail &ndash; New Email Matching Search: <code>in:inbox subject:appointment</code>), checked about every 15 minutes.</li>
+    <li><b>The tools:</b> Gmail &ndash; New Email Matching Search (reads the request); AI by Zapier (writes the reply wording, no tools attached); Gmail &ndash; Create Draft Reply (saves the draft in the same conversation, To: the sender, with my booking link and sign-off as fixed text).</li>
+    <li><b>It must never:</b> Send an email without my review. The setting that stops it: the Zap&rsquo;s only Gmail action is Create Draft Reply. It has no Send Email or Reply action, so it cannot send.</li>
+    <li><b>Where a person checks:</b> I (the account owner) open each draft in Gmail before sending it, and check that the greeting uses the right name, the reply invents no dates or times and does not accept a date that has already passed, the booking link opens, and the draft sits in the right conversation. I also check whether the reply needs more, based on what their email says, and edit it before I send it or delete it.</li>
+  </ol>
+</section>
+
+<!-- ===== EDIT HERE: runs, tricky case and fix (PS5 Step 2).
+     Upload the image files into the who-leads-quadrant folder on GitHub with exactly these names,
+     or change data-src to match your file names. ===== -->
+<section class="agent-card" id="evidence" aria-labelledby="evidence-title">
+  <h2 id="evidence-title">Runs, tricky case and fix</h2>
+  <p>The Zap ran on 16 Oct (18:11, 18:40), 17 Oct (15:03) and 18 Oct (11:13, 11:49, 12:14). I checked each run on Zapier&rsquo;s Zap runs page, comparing what the trigger caught (sender, subject, Thread Id) with what the draft step received, then opened the draft in Gmail.</p>
+  <div class="shots">
+    <figure><img data-src="run.png" alt="A normal run: the draft reply in Gmail"><figcaption>A normal run: a personalised draft with my booking link, saved in the sender&rsquo;s conversation.</figcaption></figure>
+    <figure><img data-src="tricky.png" alt="Tricky case: draft reply to a request to meet at the F1 2025 race"><figcaption>Tricky case (18 Oct 12:14): asked to meet at the F1 2025 race, the AI did not promise the date but did not point out that it had passed.</figcaption></figure>
+    <figure><img data-src="fix-1.png" alt="Fix screenshot 1"><figcaption>Problem (18 Oct 11:13): the draft landed in an old conversation, under another email&rsquo;s subject.</figcaption></figure>
+    <figure><img data-src="fix-2.png" alt="Fix screenshot 2"><figcaption>Cause: the draft step&rsquo;s Thread field held a fixed number, not the trigger&rsquo;s Thread Id.</figcaption></figure>
+    <figure><img data-src="fix-3.png" alt="Fix screenshot 3"><figcaption>Fix and rerun (18 Oct 12:14): Thread mapped to the Step 1 Thread Id tag and published; the draft landed in the sender&rsquo;s own conversation.</figcaption></figure>
+  </div>
+</section>
+
+<!-- ===== EDIT HERE: Q1, collaboration log, reflection (PS5 Step 3) ===== -->
+<section class="agent-card" id="analysis" aria-labelledby="q1-title">
+  <h2 id="q1-title">Q1. Where does my agent sit on the map?</h2>
+
+  <h3>(a) Quadrant</h3>
+  <p>A person leads, AI inside (top left).</p>
+
+  <h3>(b) The two questions</h3>
+  <p><b>Right answer?</b> Partly, and the parts that decide whether a reply is acceptable have right answers: the right person is greeted, my real booking link is included, the draft sits in the sender&rsquo;s conversation, and it promises no time I cannot keep. The exact wording has no single right answer, but wording is not what makes this reply right or wrong, so I place it in the right-answer column. In the 18 Oct 12:14 run, the draft greeted the sender by name, carried the correct link, and sat in the sender&rsquo;s own conversation.</p>
+  <p><b>Together?</b> Yes. The AI drafts the wording, but only I can judge whether the reply fits the request and my real commitments, and the reply goes out in my name. My runs show why: in the tricky case (18 Oct 12:14), asked to meet at the 2025 Singapore F1, the AI did not promise the date but did not point out that it had passed; and on 18 Oct 11:13 a draft landed in the wrong conversation. I caught both at the draft.</p>
+
+  <h3>(c) The person in the loop</h3>
+  <p>I stand at the gate in Gmail Drafts, before anything is sent. For each draft I check the name, that no date or time is invented or already past, that the link opens, and that the draft is in the right conversation, and I add anything the email asks for that the reply misses. On its own, the agent may only read emails with &ldquo;appointment&rdquo; in the subject, write the reply wording, and save a draft. It has no send action, so it cannot send.</p>
+  <p>It would move to <b>AI alone, with checks</b> (bottom left) if the AI could read my calendar, my calendar were always up to date, and the AI could reply in a human tone, spot errors in the request such as a past date, and show empathy. Then the reply would be right often enough for me to spot-check instead of reviewing every draft.</p>
+  <p>It would move to <b>A person decides, AI alongside</b> (bottom right) if my schedule had no fixed weekly free slots and I had no booking link to share. Every request would then have to be weighed against my current commitments, which is work with no single right answer that I would decide myself, with the AI only helping with wording.</p>
+
+  <h3>(d) My group&rsquo;s view</h3>
+  <p class="todo">[In class, Group 2 placed &hellip; in &hellip;. I agree / disagree because &hellip;. The question I would answer differently is &hellip;, because &hellip;.]</p>
+
+  <h3>Collaboration log</h3>
+  <ul>
+    <li><b>What I delegated to AI:</b> AI by Zapier (Gemini 3.5 Flash Lite, the cheapest tier) writes the personal greeting and the reply wording. The booking link and signature are fixed text added by the draft step, so the AI cannot change the link. I also used Claude to plan the Zap, debug the Thread ID and the HTML email body, and help draft this page; I checked and edited what it gave me.</li>
+    <li><b>What I checked, and how:</b> (1) An email without &ldquo;appointment&rdquo; in the subject started no run, as expected (about 2 min). (2) A request to meet at the F1 2025 race: the draft did not promise the date but did not flag it as past; rewording the prompt made little difference on the cheapest model, so I catch this at the draft (about 30 min). (3) The 18 Oct 11:13 draft landed in an old conversation because the Thread field held a fixed number; I mapped it to the trigger&rsquo;s Thread Id, published, and the 12:14 draft landed correctly (about 1 hour).</li>
+    <li><b>One AI error I caught:</b> the AI did not notice that the requested date (F1 2025) had already passed.</li>
+    <li><b>Time and cost:</b> about <span class="todo">[X]</span> hours to build, and about 1.5 hours checking and fixing. $0, no card; each run uses 2 tasks (AI step and draft step). I finalised this card on 17 Oct, after the first runs on 16 Oct.</li>
+  </ul>
+
+  <h3>Reflection</h3>
+  <p>The agent fitted a repetitive part of my week: each appointment request gets a polite, personalised draft with my booking link in its own conversation, so I only review and send. It failed where the cheapest AI has no tools or judgement: it cannot see my calendar, it did not notice that F1 2025 had passed, and until I mapped the Thread ID a draft landed in the wrong conversation. I would give the AI the date each email was received and, on a higher tier, access to my calendar, so it can flag impossible dates and offer real free slots.</p>
+</section>
+
+<script>
+  // Screenshots: on Vercel the page opens at "/", but the files sit in who-leads-quadrant/.
+  // Opened from your computer, the images are looked for next to this file.
+  (() => {
+    const base = location.protocol === "file:" ? "" : "/who-leads-quadrant/";
+    document.querySelectorAll("img[data-src]").forEach(img => {
+      const name = img.dataset.src;
+      img.addEventListener("error", () => {
+        const box = document.createElement("div");
+        box.className = "missing";
+        box.textContent = "Screenshot not uploaded yet: " + name;
+        img.replaceWith(box);
+      }, { once: true });
+      img.src = base + name;
+    });
+  })();
+</script>
+
+<!-- ===== EDIT HERE: the map every visitor sees.
+     How: fill in the map on the page, click Export JSON, open that file,
+     copy ALL of it, and paste it between the two script tags below
+     (replacing what is there now). ===== -->
+<script type="application/json" id="published-map">
+{
+  "team": "Group 2",
+  "items": [
+    {
+      "text": "Appointment Reply Drafter",
+      "zone": "q1",
+      "trigger": "When a new email with \"appointment\" in the subject arrives in my Gmail Inbox",
+      "action": "Then AI writes a polite reply with a personal greeting, and the Zap saves it as a draft with my booking link; I review and send",
+      "why": "The parts that matter have right answers (name, link, conversation, no false promise), and a person must own every reply before it leaves"
+    }
+  ]
+}
+</script>
+
 <script>
 (() => {
   const KEY = "who-leads-quadrant-v1";
@@ -223,12 +333,29 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     "HR · Screen job applications", "Bank · Plan a negotiation", "Asset manager · Write investor letter",
     "Government · Draft a policy"
   ];
-  let items = load(KEY) || [];
+  // Visitors with nothing saved in their own browser see the published map.
+  function published() {
+    try {
+      const data = JSON.parse(document.getElementById("published-map").textContent);
+      const list = Array.isArray(data) ? data : (data && data.items) || [];
+      const str = v => typeof v === "string" ? v : "";
+      return {
+        team: str(data && data.team),
+        items: list.filter(i => i && str(i.text).trim()).map((i, n) => ({
+          id: "p" + n, text: str(i.text).trim().slice(0, 90),
+          zone: i.zone in ZONES ? i.zone : "tray",
+          trigger: str(i.trigger), action: str(i.action), why: str(i.why)
+        }))
+      };
+    } catch { return { team: "", items: [] }; }
+  }
+  const PUBLISHED = published();
+  let items = load(KEY) || PUBLISHED.items;
   items.forEach(i => { i.trigger ??= ""; i.action ??= ""; i.why ??= ""; });
   let picked = null;
   const $ = id => document.getElementById(id);
   const teamInput = $("team");
-  teamInput.value = load(TEAM_KEY) || "";
+  teamInput.value = load(TEAM_KEY) || PUBLISHED.team;
   teamInput.addEventListener("input", () => { store(TEAM_KEY, teamInput.value); $("msg").textContent = ""; });
 
   function load(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } }
