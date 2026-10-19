@@ -259,16 +259,16 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   <h2 id="q1-title">Q1. Where does my agent sit on the map?</h2>
 
   <h3>(a) Quadrant</h3>
-  <p>Agents run it, a person judges (top right).</p>
+  <p>A person decides, AI alongside (bottom right).</p>
 
   <h3>(b) The two questions</h3>
   <p><b>Right answer?</b> No single right answer. Each reply depends on what the sender asks and on my commitments at the time, and a good reply could be worded many ways; only the schedule link is fixed, and I keep the schedule behind it up to date. An extra test shows this: asked to meet at the F1 2025 race (18 Oct 12:14), a good reply needed judgement, noticing the date had passed, declining politely and inviting a new date. The AI&rsquo;s reply was polite but missed it, and no single rule in the prompt captured what the right reply should be.</p>
-  <p><b>Together?</b> Yes. The agent runs the process on its own: it picks up each request, writes the reply and files the draft in the sender&rsquo;s conversation. But I judge every draft before it leaves, because only I know my real commitments and the reply goes out in my name. My runs show why the judgement is needed: in my F1 test (see the last screenshot), the draft missed that the date had already passed, and I caught it at the draft.</p>
+  <p><b>Together?</b> No. Either of us could do this work alone, so I place it in the bottom row. I could answer every request myself by pasting my schedule link and writing two lines; the AI only saves me time on the wording. In practice I run the process: I prepare my calendar so the schedule link is realistic, screen the scheduling emails the Zap misses, and check and edit every draft before I send it. My F1 test (see the last screenshot) shows why the decision stays with me: the draft missed that the date had already passed, and I caught it at the draft.</p>
 
   <h3>(c) The person in the loop</h3>
   <p>I stand at the gate in Gmail Drafts, before anything is sent. For each draft I check the name, that no date or time is invented or already past, that the link opens, and that the draft is in the right conversation. I also catch requests that don&rsquo;t make sense, such as meeting at the 2025 F1 race, which has already passed, and I add anything the email asks for that the reply misses. On its own, the agent may only read emails with &ldquo;appointment&rdquo; in the subject, write the reply wording, and save a draft. It has no send action, so it cannot send.</p>
   <p>It would move to <b>AI alone, with checks</b> (bottom left) if the AI could read my always-up-to-date calendar, recognise scheduling emails without the word &ldquo;appointment&rdquo;, and spot errors such as a past date. My calendar would then decide the right reply, and the AI could work alone while I spot-check instead of judging every draft.</p>
-  <p>It would move to <b>A person decides, AI alongside</b> (bottom right) if I were extremely busy, my schedule had almost no free slots, and I had no booking link to share. Every request would then have to be weighed against my current commitments in my own head, so I would decide each reply myself, with the AI only helping with wording.</p>
+  <p>It would move to <b>Agents run it, a person judges</b> (top right) if the agent could handle the whole request itself, recognising scheduling emails, checking my calendar and proposing real free slots, so that it ran the process and I only judged each draft before it went out.</p>
 
   <h3>(d) My group&rsquo;s view</h3>
   <p>I agree with three of our five placements; for two, I would answer one question differently.</p>
@@ -317,10 +317,10 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   "items": [
     {
       "text": "Draft reply to ask to reschedule on my Google schedule",
-      "zone": "q2",
+      "zone": "q4",
       "trigger": "When a new email or calendar invite with \"appointment\" in the subject arrives in my Gmail Inbox",
       "action": "Then AI writes a polite reply with a personal greeting, and the Zap saves it as a draft with my booking link; I review and send",
-      "why": "No single right answer: each reply depends on what the sender asks. The agent runs the process, and I judge every draft before it leaves"
+      "why": "No single right answer: each reply depends on what the sender asks. I could do it alone; the AI only drafts the wording, and I decide every reply"
     }
   ]
 }
