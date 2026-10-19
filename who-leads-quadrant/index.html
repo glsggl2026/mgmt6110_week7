@@ -147,6 +147,7 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .agent-card h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(18px, 2vw, 24px); margin: 0 0 14px; line-height: 1.2; }
 .agent-card ol { margin: 0; padding-left: 1.4em; display: grid; gap: 10px; max-width: 75ch; line-height: 1.5; }
 .agent-card b { font-weight: 600; }
+.agent-card ol ul { margin: 6px 0 0; gap: 4px; }
 .agent-card h3 { font-family: var(--font-display); font-weight: 700; font-size: 17px; margin: 22px 0 8px; line-height: 1.25; }
 .agent-card p, .agent-card li { max-width: 75ch; line-height: 1.55; }
 .agent-card p { margin: 0 0 10px; }
@@ -203,6 +204,7 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
       <button type="button" id="examples">Load simulated examples</button>
       <button type="button" id="unplace">Move all back</button>
       <button type="button" id="clear">Clear all</button>
+      <button type="button" id="reset" title="Bring back the published map with my agent">Reset to my agent</button>
     </form>
 
     <div class="trayrow">
@@ -219,13 +221,19 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
 <!-- ===== EDIT HERE: your agent card (PS5 Step 1) ===== -->
 <section class="agent-card" id="agent-card" aria-labelledby="agent-card-title">
-  <h2 id="agent-card-title">My agent card | Appointment Reply Drafter | finished 17 Oct 2026, 12:00 PM SGT</h2>
+  <h2 id="agent-card-title">My agent card | Draft reply to ask to reschedule on my Google schedule | finished 17 Oct 2026, 12:00 PM SGT</h2>
   <ol>
-    <li><b>The job:</b> When someone emails me to ask for an appointment, it drafts a short, polite reply that greets them by first name and responds to what they asked. If they want to meet in the future, it invites them to book a time on my shared Google schedule; if the request isn&rsquo;t realistic, it replies politely. It works for me, a postgrad student who juggles postgrad timelines, personal life and project meetings, so senders can book directly and I spend less time on rescheduling.</li>
-    <li><b>The trigger:</b> A new email in my Gmail Inbox with &ldquo;appointment&rdquo; in the subject (Gmail &ndash; New Email Matching Search: <code>in:inbox subject:appointment</code>), checked about every 15 minutes.</li>
+    <li><b>The job:</b> When someone emails my Gmail account to make an appointment, or sends me a calendar invite, with the keyword &ldquo;appointment&rdquo; in the subject, it drafts a short, polite reply that greets them by first name and responds to what they asked. If they want to meet in the future, it invites them to book a time on my shared Google schedule; if the request isn&rsquo;t realistic, it replies politely. It works for me, a postgrad student who juggles postgrad timelines, personal life and project meetings, so senders can book directly and I spend less time on rescheduling.</li>
+    <li><b>The trigger:</b> A new email or a new calendar invite in my Gmail Inbox with &ldquo;appointment&rdquo; in the subject (Gmail &ndash; New Email Matching Search: <code>in:inbox subject:appointment</code>), checked about every 15 minutes.</li>
     <li><b>The tools:</b> Gmail &ndash; New Email Matching Search (reads the request); AI by Zapier (writes the reply wording, no tools attached); Gmail &ndash; Create Draft Reply (saves the draft in the same conversation, To: the sender, with my booking link and sign-off as fixed text).</li>
     <li><b>It must never:</b> Send an email without my review. The setting that stops it: the Zap&rsquo;s only Gmail action is Create Draft Reply. It has no Send Email or Reply action, so it cannot send.</li>
-    <li><b>Where a person checks:</b> I (the account owner) open each draft in Gmail before sending it, and check that the greeting uses the right name, the reply invents no dates or times and does not accept a date that has already passed, the booking link opens, and the draft sits in the right conversation. I also check whether the reply needs more, based on what their email says, and edit it before I send it or delete it.</li>
+    <li><b>Where a person checks:</b> I (the account owner) prepare my data, then check each draft in two ways.
+      <ul>
+        <li><b>Preparing my data:</b> because the Zap only catches emails with &ldquo;appointment&rdquo; in the subject and cannot read my calendar, I screen other scheduling emails myself, set my priorities and block &ldquo;must-do&rdquo; events in my calendar, so my shared Google schedule stays realistic and people book against my latest availability.</li>
+        <li><b>Check 1, accuracy:</b> before sending, I open each draft in Gmail and check that the greeting uses the right name, the reply invents no dates or times and does not accept a date that has already passed, the booking link opens, and the draft sits in the right conversation.</li>
+        <li><b>Check 2, completeness:</b> I check whether the reply needs more, based on what the email says, and edit it before I send it or delete it.</li>
+      </ul>
+    </li>
   </ol>
 </section>
 
@@ -237,10 +245,12 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   <p>The Zap ran on 16 Oct (18:11, 18:40), 17 Oct (15:03) and 18 Oct (11:13, 11:49, 12:14). I checked each run on Zapier&rsquo;s Zap runs page, comparing what the trigger caught (sender, subject, Thread Id) with what the draft step received, then opened the draft in Gmail.</p>
   <div class="shots">
     <figure><img data-src="run.png" alt="A normal run: the draft reply in Gmail"><figcaption>A normal run: a personalised draft with my booking link, saved in the sender&rsquo;s conversation.</figcaption></figure>
-    <figure><img data-src="tricky.png" alt="Tricky case: draft reply to a request to meet at the F1 2025 race"><figcaption>Tricky case (18 Oct 12:14): asked to meet at the F1 2025 race, the AI did not promise the date but did not point out that it had passed.</figcaption></figure>
-    <figure><img data-src="fix-1.png" alt="Fix screenshot 1"><figcaption>Problem (18 Oct 11:13): the draft landed in an old conversation, under another email&rsquo;s subject.</figcaption></figure>
-    <figure><img data-src="fix-2.png" alt="Fix screenshot 2"><figcaption>Cause: the draft step&rsquo;s Thread field held a fixed number, not the trigger&rsquo;s Thread Id.</figcaption></figure>
-    <figure><img data-src="fix-3.png" alt="Fix screenshot 3"><figcaption>Fix and rerun (18 Oct 12:14): Thread mapped to the Step 1 Thread Id tag and published; the draft landed in the sender&rsquo;s own conversation.</figcaption></figure>
+    <figure><img data-src="tricky-1.png" alt="Tricky case: the new appointment email and its subject"><figcaption>Tricky case (18 Oct 11:13), part 1: an appointment email from a new sender, in a new conversation, with its own subject. I expected the draft to sit in this conversation, under this subject.</figcaption></figure>
+    <figure><img data-src="tricky-draft.png" alt="Tricky case: the draft under a different subject"><figcaption>Tricky case, part 2 (the problem): the draft appeared under a different subject. It had landed in an old conversation, not the new sender&rsquo;s.</figcaption></figure>
+    <figure><img data-src="cause-1.5.png" alt="Cause, part 1: the trigger's Thread Id"><figcaption>Cause, part 1: in the same run, the trigger (Step 1) caught the new email, Thread Id &hellip;ff60a.</figcaption></figure>
+    <figure><img data-src="cause-2.png" alt="Cause, part 2: the draft step's Thread value"><figcaption>Cause, part 2: the draft step (Step 3) used Thread &hellip;de210, a fixed number left from an earlier test. The two Thread Ids do not match, so the draft went into an old conversation.</figcaption></figure>
+    <figure><img data-src="fix-1.png" alt="Fix and rerun"><figcaption>Fix and rerun of the tricky case (18 Oct 12:14): Thread mapped to the Step 1 Thread Id tag and published; a new email in a new conversation, and the draft landed in the sender&rsquo;s own conversation.</figcaption></figure>
+    <figure><img data-src="f1-test.png" alt="Extra test: draft reply to a request to meet at the F1 2025 race"><figcaption>Extra test (18 Oct 12:14): asked to meet at the F1 2025 race, the AI did not promise the date but did not point out that it had passed. Not fixed; I catch this at the draft.</figcaption></figure>
   </div>
 </section>
 
@@ -249,24 +259,28 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   <h2 id="q1-title">Q1. Where does my agent sit on the map?</h2>
 
   <h3>(a) Quadrant</h3>
-  <p>A person leads, AI inside (top left).</p>
+  <p>Agents run it, a person judges (top right).</p>
 
   <h3>(b) The two questions</h3>
-  <p><b>Right answer?</b> Partly, and the parts that decide whether a reply is acceptable have right answers: the right person is greeted, my real booking link is included, the draft sits in the sender&rsquo;s conversation, and it promises no time I cannot keep. The exact wording has no single right answer, but wording is not what makes this reply right or wrong, so I place it in the right-answer column. In the 18 Oct 12:14 run, the draft greeted the sender by name, carried the correct link, and sat in the sender&rsquo;s own conversation.</p>
-  <p><b>Together?</b> Yes. The AI drafts the wording, but only I can judge whether the reply fits the request and my real commitments, and the reply goes out in my name. My runs show why: in the tricky case (18 Oct 12:14), asked to meet at the 2025 Singapore F1, the AI did not promise the date but did not point out that it had passed; and on 18 Oct 11:13 a draft landed in the wrong conversation. I caught both at the draft.</p>
+  <p><b>Right answer?</b> No single right answer. Each reply depends on what the sender asks and on my commitments at the time, and a good reply could be worded many ways; only the booking link is fixed. An extra test shows this: asked to meet at the F1 2025 race (18 Oct 12:14), a good reply needed judgement, noticing the date had passed, declining politely and inviting a new date. The AI&rsquo;s reply was polite but missed it, and no single rule in the prompt captured what the right reply should be.</p>
+  <p><b>Together?</b> Yes. The agent runs the process on its own: it picks up each request, writes the reply and files the draft in the sender&rsquo;s conversation. But I judge every draft before it leaves, because only I know my real commitments and the reply goes out in my name. My runs show why the judgement is needed: the F1 draft missed the past date, and in my tricky case (18 Oct 11:13) a draft landed in the wrong conversation. I caught both at the draft.</p>
 
   <h3>(c) The person in the loop</h3>
-  <p>I stand at the gate in Gmail Drafts, before anything is sent. For each draft I check the name, that no date or time is invented or already past, that the link opens, and that the draft is in the right conversation, and I add anything the email asks for that the reply misses. On its own, the agent may only read emails with &ldquo;appointment&rdquo; in the subject, write the reply wording, and save a draft. It has no send action, so it cannot send.</p>
-  <p>It would move to <b>AI alone, with checks</b> (bottom left) if the AI could read my calendar, my calendar were always up to date, and the AI could reply in a human tone, spot errors in the request such as a past date, and show empathy. Then the reply would be right often enough for me to spot-check instead of reviewing every draft.</p>
-  <p>It would move to <b>A person decides, AI alongside</b> (bottom right) if my schedule had no fixed weekly free slots and I had no booking link to share. Every request would then have to be weighed against my current commitments, which is work with no single right answer that I would decide myself, with the AI only helping with wording.</p>
+  <p>I stand at the gate in Gmail Drafts, before anything is sent. For each draft I check the name, that no date or time is invented or already past, that the link opens, and that the draft is in the right conversation. I also catch requests that don&rsquo;t make sense, such as meeting at the 2025 F1 race, which has already passed, and I add anything the email asks for that the reply misses. On its own, the agent may only read emails with &ldquo;appointment&rdquo; in the subject, write the reply wording, and save a draft. It has no send action, so it cannot send.</p>
+  <p>It would move to <b>AI alone, with checks</b> (bottom left) if the AI could tell which emails and calendar invites are about making an appointment even without the keyword &ldquo;appointment&rdquo;, sort requests by priority for me, read my calendar, my calendar were always up to date, the agent were not limited to a few steps as on Zapier&rsquo;s free tier, and the AI could reply in a human tone, spot errors in the request such as a past date, and show empathy. My calendar would then decide the right reply, and the AI could do the work alone while I spot-check instead of judging every draft.</p>
+  <p>It would move to <b>A person decides, AI alongside</b> (bottom right) if I were extremely busy, my schedule had almost no free slots, and I had no booking link to share. Every request would then have to be weighed against my current commitments in my own head, so I would decide each reply myself, with the AI only helping with wording.</p>
 
   <h3>(d) My group&rsquo;s view</h3>
-  <p class="todo">[In class, Group 2 placed &hellip; in &hellip;. I agree / disagree because &hellip;. The question I would answer differently is &hellip;, because &hellip;.]</p>
+  <p>I agree with three of our five placements; for two, I would answer one question differently.</p>
+  <p><b>Finance: analyst research</b> (question 1, is there a right answer?). We placed &ldquo;AI checks news headlines and returns key market activities and events&rdquo; in <b>AI alone, with checks</b>, because it has a right answer.</p>
+  <p>I answer question 1 differently. Our placement names a task but no goal, and the answer depends on the goal. If the goal is to decide whether to buy or sell, there is no single right answer, because two analysts may have different risk appetites and can read the same news and decide differently. In that case the agent still gathers the news at 10 a.m., but the analyst screens which items matter for their risk, and then decides. The analyst could do this work alone, with the AI only speeding up the gathering, so my answer to question 2 stays the same as the group&rsquo;s. This moves it to <b>A person decides, AI alongside</b>.</p>
+  <p><b>Operations: escalations of disputes</b> (question 2, together or alone?). We placed this in <b>Agents run it, a person judges</b>. We didn&rsquo;t define what kind of dispute it is. Assume a Grab passenger complains about a driver&rsquo;s behaviour, e.g. taking a longer route without listening to the passenger&rsquo;s advice. The passenger also uploads pictures and videos as evidence.</p>
+  <p>In this situation, I agree there is no single right answer. I would answer question 2 differently. Our placement says the AI only pulls the case information together. However, the ops person needs to examine the uploaded evidence, read the complaint, call the driver, and then decide which internal policies pulled by the AI apply to this dispute. The person still runs the dispute and makes the decision, with the AI alongside. The ops person could do this work alone, with the AI only speeding up the gathering, so I answer question 2 as &ldquo;either can do alone&rdquo;. This moves it to <b>A person decides, AI alongside</b>.</p>
 
   <h3>Collaboration log</h3>
   <ul>
     <li><b>What I delegated to AI:</b> AI by Zapier (Gemini 3.5 Flash Lite, the cheapest tier) writes the personal greeting and the reply wording. The booking link and signature are fixed text added by the draft step, so the AI cannot change the link. I also used Claude to plan the Zap, debug the Thread ID and the HTML email body, and help draft this page; I checked and edited what it gave me.</li>
-    <li><b>What I checked, and how:</b> (1) An email without &ldquo;appointment&rdquo; in the subject started no run, as expected (about 2 min). (2) A request to meet at the F1 2025 race: the draft did not promise the date but did not flag it as past; rewording the prompt made little difference on the cheapest model, so I catch this at the draft (about 30 min). (3) The 18 Oct 11:13 draft landed in an old conversation because the Thread field held a fixed number; I mapped it to the trigger&rsquo;s Thread Id, published, and the 12:14 draft landed correctly (about 1 hour).</li>
+    <li><b>What I checked, and how:</b> (1) An email without &ldquo;appointment&rdquo; in the subject started no run, as expected (about 2 min). (2) A request to meet at the F1 2025 race: the draft did not promise the date but did not flag it as past; rewording the prompt made little difference on the cheapest model, so I catch this at the draft (about 30 min). (3) Tricky case: the 18 Oct 11:13 draft landed in an old conversation because the Thread field held a fixed number; I mapped it to the trigger&rsquo;s Thread Id, published, and the 12:14 draft landed correctly (about 1 hour).</li>
     <li><b>One AI error I caught:</b> the AI did not notice that the requested date (F1 2025) had already passed.</li>
     <li><b>Time and cost:</b> about <span class="todo">[X]</span> hours to build, and about 1.5 hours checking and fixing. $0, no card; each run uses 2 tasks (AI step and draft step). I finalised this card on 17 Oct, after the first runs on 16 Oct.</li>
   </ul>
@@ -302,11 +316,11 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   "team": "Group 2",
   "items": [
     {
-      "text": "Appointment Reply Drafter",
-      "zone": "q1",
-      "trigger": "When a new email with \"appointment\" in the subject arrives in my Gmail Inbox",
+      "text": "Draft reply to ask to reschedule on my Google schedule",
+      "zone": "q2",
+      "trigger": "When a new email or calendar invite with \"appointment\" in the subject arrives in my Gmail Inbox",
       "action": "Then AI writes a polite reply with a personal greeting, and the Zap saves it as a draft with my booking link; I review and send",
-      "why": "The parts that matter have right answers (name, link, conversation, no false promise), and a person must own every reply before it leaves"
+      "why": "No single right answer: each reply depends on what the sender asks. The agent runs the process, and I judge every draft before it leaves"
     }
   ]
 }
@@ -350,7 +364,9 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     } catch { return { team: "", items: [] }; }
   }
   const PUBLISHED = published();
-  let items = load(KEY) || PUBLISHED.items;
+  const saved = load(KEY);
+  // An empty saved map (e.g. after removing every chip) shows the published map again.
+  let items = Array.isArray(saved) && saved.length ? saved : PUBLISHED.items.map(i => ({ ...i }));
   items.forEach(i => { i.trigger ??= ""; i.action ??= ""; i.why ??= ""; });
   let picked = null;
   const $ = id => document.getElementById(id);
@@ -487,6 +503,13 @@ button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
   $("unplace").addEventListener("click", () => { items.forEach(i => i.zone = "tray"); picked = null; render(); });
   const clearBtn = $("clear");
   let clearArmed = false;
+  $("reset").addEventListener("click", () => {
+    items = PUBLISHED.items.map(i => ({ ...i })); picked = null;
+    teamInput.value = PUBLISHED.team; store(TEAM_KEY, PUBLISHED.team);
+    render();
+    if (!$("panel-trigger").hidden) renderSheet();
+    $("msg").textContent = "Map reset to my agent.";
+  });
   clearBtn.addEventListener("click", () => {
     if (!clearArmed) { clearArmed = true; clearBtn.textContent = "Click again to clear"; setTimeout(() => { clearArmed = false; clearBtn.textContent = "Clear all"; }, 2500); return; }
     clearArmed = false; clearBtn.textContent = "Clear all"; items = []; picked = null; render();
